@@ -1,0 +1,318 @@
+================================================================================
+                    APLIKASI BOOKING & ANTRIAN PANGKAS RAMBUT
+                         BACKEND MANAGEMENT SYSTEM
+================================================================================
+
+📋 DESKRIPSI SINGKAT
+--------------------
+Aplikasi backend untuk sistem booking dan antrian pangkas rambut. Sistem ini memiliki
+2 role utama: Admin (perlu login) dan Customer (tanpa login).
+
+================================================================================
+
+👤 ROLE & HAK AKSES
+-------------------
+
+1. ADMIN (Perlu Login)
+   - Login menggunakan email & password
+   - Mengelola data pangkas rambut
+   - Mengelola jadwal tukang cukur
+   - Melihat daftar booking
+   - Mengelola antrian
+   - Melihat laporan/statistik
+   - Mengkonfirmasi/membatalkan booking
+   - Mengelola layanan (services)
+   - Mengelola harga
+
+2. CUSTOMER (Tanpa Login)
+   - Melihat daftar layanan & harga
+   - Melihat jadwal tersedia
+   - Membuat booking baru (dengan nama & nomor HP)
+   - Melihat status antrian dengan kode booking
+   - Membatalkan booking dengan kode booking + nomor HP
+
+================================================================================
+
+🗄️ DATABASE STRUKTUR (TABEL)
+-----------------------------
+
+1. admins
+   - id
+   - name
+   - email
+   - password
+   - created_at
+   - updated_at
+
+2. services (Layanan)
+   - id
+   - name (cth: Potong Rambut, Cukur Jenggot, Hair Coloring)
+   - description
+   - price
+   - duration_minutes (estimasi durasi dalam menit)
+   - is_active
+   - created_at
+   - updated_at
+
+3. tukang_cukurs (Tukang Cukur)
+   - id
+   - name
+   - phone
+   - photo
+   - is_active
+   - created_at
+   - updated_at
+
+4. schedules (Jadwal Operasional)
+   - id
+   - tukang_cukur_id
+   - day_of_week (0=Minggu, 1=Senin, dst)
+   - open_time
+   - close_time
+   - is_available
+   - created_at
+   - updated_at
+
+5. bookings
+   - id
+   - booking_code (unique, untuk tracking customer)
+   - customer_name
+   - customer_phone
+   - tukang_cukur_id
+   - service_id
+   - booking_date
+   - booking_time
+   - status (pending, confirmed, in_progress, completed, cancelled)
+   - queue_number (nomor antrian hari itu)
+   - notes
+   - created_at
+   - updated_at
+
+6. settings (Pengaturan)
+   - id
+   - key
+   - value
+   - created_at
+   - updated_at
+
+7. logs (Activity Logs)
+   - id
+   - admin_id (nullable, jika aksi oleh admin)
+   - action (cth: booking_created, status_updated, login, logout)
+   - loggable_type (model yang terkait: Booking, Service, TukangCukur, dll)
+   - loggable_id (ID dari model terkait)
+   - description (deskripsi aktivitas)
+   - old_values (JSON, nilai sebelum perubahan)
+   - new_values (JSON, nilai setelah perubahan)
+   - ip_address
+   - user_agent
+   - created_at
+   - updated_at
+
+================================================================================
+
+🔧 FITUR ADMIN
+--------------
+
+A. Dashboard
+   - Total booking hari ini
+   - Total pendapatan hari ini
+   - Jumlah antrian menunggu
+   - Statistik mingguan/bulanan
+
+B. Manajemen Layanan (Services)
+   - CRUD layanan
+   - Aktif/nonaktifkan layanan
+   - Set harga dan durasi
+
+C. Manajemen Tukang Cukur
+   - CRUD data tukang cukur
+   - Upload foto tukang cukur
+   - Aktif/nonaktifkan tukang cukur
+
+D. Manajemen Jadwal
+   - Set jadwal operasional per tukang cukur
+   - Set hari libur
+
+E. Manajemen Booking
+   - Lihat semua booking
+   - Filter by tanggal, status, tukang cukur
+   - Konfirmasi booking
+   - Batalkan booking
+   - Update status (in_progress, completed)
+
+F. Manajemen Antrian
+   - Lihat antrian real-time
+   - Panggil antrian berikutnya
+   - Skip antrian
+   - Reset antrian harian
+
+G. Laporan
+   - Laporan harian
+   - Laporan mingguan
+   - Laporan bulanan
+   - Export ke Excel/PDF
+
+H. Activity Logs
+   - Lihat semua aktivitas sistem
+   - Filter by tanggal, action, admin
+   - Detail log aktivitas
+   - Hapus log lama
+
+================================================================================
+
+📱 FITUR CUSTOMER (Tanpa Login)
+-------------------------------
+
+A. Lihat Informasi
+   - Daftar layanan & harga
+   - Daftar tukang cukur
+   - Jadwal tersedia
+
+B. Booking
+   - Pilih layanan
+   - Pilih tukang cukur (atau random)
+   - Pilih tanggal & waktu
+   - Input nama & nomor HP
+   - Dapatkan kode booking
+
+C. Cek Status
+   - Input kode booking
+   - Lihat status booking
+   - Lihat nomor antrian
+   - Estimasi waktu tunggu
+
+D. Batalkan Booking
+   - Input kode booking + nomor HP
+   - Konfirmasi pembatalan
+
+================================================================================
+
+🛣️ API ENDPOINTS
+-----------------
+
+--- PUBLIC (Customer - No Auth) ---
+
+GET    /api/services                    - Daftar layanan
+GET    /api/tukang-cukurs               - Daftar tukang cukur
+GET    /api/schedules/available         - Jadwal tersedia
+POST   /api/bookings                    - Buat booking baru
+GET    /api/bookings/{code}/status      - Cek status booking
+POST   /api/bookings/{code}/cancel      - Batalkan booking
+GET    /api/queue/today                 - Lihat antrian hari ini
+
+--- ADMIN (Auth Required) ---
+
+POST   /api/admin/login                 - Login admin
+POST   /api/admin/logout                - Logout admin
+
+GET    /api/admin/dashboard             - Data dashboard
+
+GET    /api/admin/services              - List services
+POST   /api/admin/services              - Create service
+GET    /api/admin/services/{id}         - Detail service
+PUT    /api/admin/services/{id}         - Update service
+DELETE /api/admin/services/{id}         - Delete service
+
+GET    /api/admin/tukang-cukurs         - List tukang cukur
+POST   /api/admin/tukang-cukurs         - Create tukang cukur
+GET    /api/admin/tukang-cukurs/{id}    - Detail tukang cukur
+PUT    /api/admin/tukang-cukurs/{id}    - Update tukang cukur
+DELETE /api/admin/tukang-cukurs/{id}    - Delete tukang cukur
+
+GET    /api/admin/schedules             - List schedules
+POST   /api/admin/schedules             - Create schedule
+PUT    /api/admin/schedules/{id}        - Update schedule
+DELETE /api/admin/schedules/{id}        - Delete schedule
+
+GET    /api/admin/bookings              - List all bookings
+GET    /api/admin/bookings/{id}         - Detail booking
+PUT    /api/admin/bookings/{id}/status  - Update status booking
+DELETE /api/admin/bookings/{id}         - Delete booking
+
+GET    /api/admin/queue                 - Get current queue
+POST   /api/admin/queue/next            - Call next queue
+POST   /api/admin/queue/reset           - Reset daily queue
+
+GET    /api/admin/reports/daily         - Laporan harian
+GET    /api/admin/reports/weekly        - Laporan mingguan
+GET    /api/admin/reports/monthly       - Laporan bulanan
+
+GET    /api/admin/logs                  - List all logs
+GET    /api/admin/logs/{id}             - Detail log
+DELETE /api/admin/logs/{id}             - Delete log
+DELETE /api/admin/logs/clear            - Clear old logs
+
+================================================================================
+
+🔐 AUTENTIKASI
+--------------
+- Admin: Laravel Sanctum (Token-based)
+- Customer: Tidak perlu autentikasi
+- Validasi customer menggunakan kombinasi kode_booking + nomor_hp
+
+================================================================================
+
+📦 TEKNOLOGI YANG DIGUNAKAN
+---------------------------
+- Framework: Laravel 11
+- Database: MySQL
+- Authentication: Laravel Sanctum
+- API: RESTful API
+- Validation: Laravel Form Request
+- Queue: Laravel Queue (untuk notifikasi)
+
+================================================================================
+
+🚀 FITUR TAMBAHAN (OPSIONAL)
+----------------------------
+1. Notifikasi WhatsApp ke customer saat:
+   - Booking dikonfirmasi
+   - Antrian dipanggil
+   - Booking dibatalkan
+
+2. Slot Time Management
+   - Sistem otomatis menghitung slot waktu tersedia
+   - Mencegah double booking
+
+3. Rating & Review (setelah selesai)
+
+4. Membership/Loyalty Points
+
+5. Promo & Diskon
+
+================================================================================
+
+📋 PRIORITAS DEVELOPMENT
+------------------------
+
+Phase 1 (MVP):
+- [x] Setup Laravel
+- [ ] Migrasi database
+- [ ] CRUD Services
+- [ ] CRUD Tukang Cukur
+- [ ] CRUD Schedules
+- [ ] Booking system (create & view)
+- [ ] Admin authentication
+
+Phase 2:
+- [ ] Queue management
+- [ ] Dashboard statistics
+- [ ] Cancel booking
+
+Phase 3:
+- [ ] Reports
+- [ ] WhatsApp notification
+- [ ] Advanced features
+
+================================================================================
+
+📝 CATATAN
+----------
+- Kode booking generate otomatis (contoh: BRB-20231201-001)
+- Nomor antrian reset setiap hari
+- Validasi slot waktu agar tidak bentrok
+- Status flow: pending -> confirmed -> in_progress -> completed
+- Customer bisa cancel hanya jika status masih pending/confirmed
+
+================================================================================
