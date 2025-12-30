@@ -53,8 +53,8 @@ Aplikasi ini adalah RESTful API untuk mengelola sistem booking dan antrian pada 
 1. **Clone repository**
 
     ```bash
-    git clone <repository-url>
-    cd booking_pangkas_rambut
+    git clone https://github.com/irwanto333/Sistem-Booking-Antrian-Pangkas-Rambut.git
+    cd Sistem-Booking-Antrian-Pangkas-Rambut
     ```
 
 2. **Install dependencies**
