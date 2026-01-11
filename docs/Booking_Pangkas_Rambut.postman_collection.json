@@ -2,7 +2,7 @@
     "info": {
         "_postman_id": "booking-pangkas-rambut-collection",
         "name": "Booking Pangkas Rambut API",
-        "description": "API Collection untuk Sistem Booking Antrian Pangkas Rambut.\n\n## Cara Penggunaan:\n1. Import environment file terlebih dahulu\n2. Jalankan request Login Admin untuk mendapatkan token\n3. Token akan otomatis tersimpan di environment variable\n\n## Public Endpoints (No Auth Required):\n- Services, Tukang Cukur, Schedules\n- Booking (Create, Check Status, Cancel)\n- Queue Today\n\n## Admin Endpoints (Auth Required):\n- Semua CRUD operations\n- Dashboard, Reports, Logs",
+        "description": "API untuk Sistem Booking Antrian Pangkas Rambut - Laravel Herd",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -10,1610 +10,1147 @@
             "name": "Public",
             "item": [
                 {
-                    "name": "Services",
-                    "item": [
-                        {
-                            "name": "Get All Active Services",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/services",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["services"]
-                                },
-                                "description": "Mengambil daftar semua layanan yang aktif (is_active = true)"
-                            },
-                            "response": []
+                    "name": "Get All Active Services",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/services",
+                            "host": ["{{base_url}}"],
+                            "path": ["services"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Tukang Cukur",
-                    "item": [
-                        {
-                            "name": "Get All Active Tukang Cukur",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/tukang-cukurs",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["tukang-cukurs"]
-                                },
-                                "description": "Mengambil daftar semua tukang cukur yang aktif"
-                            },
-                            "response": []
+                    "name": "Get All Active Tukang Cukur",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/tukang-cukurs",
+                            "host": ["{{base_url}}"],
+                            "path": ["tukang-cukurs"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Schedules",
-                    "item": [
-                        {
-                            "name": "Get Available Schedules",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/schedules/available",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["schedules", "available"]
-                                },
-                                "description": "Mengambil jadwal yang tersedia untuk hari ini"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Available Schedules by Date",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/schedules/available?date=2026-01-12",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["schedules", "available"],
-                                    "query": [
-                                        {
-                                            "key": "date",
-                                            "value": "2026-01-12",
-                                            "description": "Format: YYYY-MM-DD"
-                                        }
-                                    ]
-                                },
-                                "description": "Mengambil jadwal yang tersedia untuk tanggal tertentu"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Available Schedules by Tukang Cukur",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/schedules/available?tukang_cukur_id={{tukang_cukur_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["schedules", "available"],
-                                    "query": [
-                                        {
-                                            "key": "tukang_cukur_id",
-                                            "value": "{{tukang_cukur_id}}"
-                                        }
-                                    ]
-                                },
-                                "description": "Mengambil jadwal yang tersedia untuk tukang cukur tertentu"
-                            },
-                            "response": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Bookings",
-                    "item": [
-                        {
-                            "name": "Create Booking",
-                            "event": [
+                    "name": "Get Available Schedules",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/schedules/available?date={{booking_date}}&tukang_cukur_id={{tukang_cukur_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["schedules", "available"],
+                            "query": [
+                                { "key": "date", "value": "{{booking_date}}" },
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data) {",
-                                            "    pm.environment.set('booking_code', jsonData.data.booking_code);",
-                                            "    console.log('Booking code saved: ' + jsonData.data.booking_code);",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "tukang_cukur_id",
+                                    "value": "{{tukang_cukur_id}}"
                                 }
-                            ],
-                            "request": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"customer_name\": \"John Doe\",\n    \"customer_phone\": \"081234567890\",\n    \"tukang_cukur_id\": {{tukang_cukur_id}},\n    \"service_id\": {{service_id}},\n    \"booking_date\": \"2026-01-12\",\n    \"booking_time\": \"10:00\",\n    \"notes\": \"Potong rapi ya mas\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/bookings",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["bookings"]
-                                },
-                                "description": "Membuat booking baru.\n\nResponse akan menyimpan booking_code ke environment variable secara otomatis."
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Check Booking Status",
-                            "event": [
-                                {
-                                    "listen": "prerequest",
-                                    "script": {
-                                        "exec": [
-                                            "// Pastikan booking_code sudah diset",
-                                            "if (!pm.environment.get('booking_code')) {",
-                                            "    console.log('Warning: booking_code belum diset. Jalankan Create Booking terlebih dahulu.');",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
-                                }
-                            ],
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/bookings/{{booking_code}}/status",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "bookings",
-                                        "{{booking_code}}",
-                                        "status"
-                                    ]
-                                },
-                                "description": "Mengecek status booking berdasarkan booking code.\n\nTermasuk informasi:\n- Status booking\n- Nomor antrian\n- Estimasi waktu tunggu"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Cancel Booking",
-                            "request": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"customer_phone\": \"081234567890\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/bookings/{{booking_code}}/cancel",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "bookings",
-                                        "{{booking_code}}",
-                                        "cancel"
-                                    ]
-                                },
-                                "description": "Membatalkan booking.\n\nMemerlukan customer_phone yang sama dengan saat booking untuk verifikasi."
-                            },
-                            "response": []
+                            ]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Queue",
-                    "item": [
+                    "name": "Create Booking",
+                    "event": [
                         {
-                            "name": "Get Today's Queue",
-                            "request": {
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var json = pm.response.json();",
+                                    "if (json.success && json.data && json.data.booking_code) {",
+                                    "    pm.environment.set('booking_code', json.data.booking_code);",
+                                    "}"
                                 ],
-                                "url": {
-                                    "raw": "{{base_url}}/queue/today",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["queue", "today"]
-                                },
-                                "description": "Mengambil antrian hari ini.\n\nInformasi yang ditampilkan:\n- Current queue (yang sedang dilayani)\n- Total yang menunggu\n- Daftar antrian"
-                            },
-                            "response": []
+                                "type": "text/javascript"
+                            }
                         }
-                    ]
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"customer_name\": \"John Doe\",\n    \"customer_phone\": \"{{customer_phone}}\",\n    \"tukang_cukur_id\": {{tukang_cukur_id}},\n    \"service_id\": {{service_id}},\n    \"booking_date\": \"{{booking_date}}\",\n    \"booking_time\": \"10:00\",\n    \"notes\": \"Potong rapi\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/bookings",
+                            "host": ["{{base_url}}"],
+                            "path": ["bookings"]
+                        }
+                    }
+                },
+                {
+                    "name": "Check Booking Status",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/bookings/{{booking_code}}/status",
+                            "host": ["{{base_url}}"],
+                            "path": ["bookings", "{{booking_code}}", "status"]
+                        }
+                    }
+                },
+                {
+                    "name": "Cancel Booking",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"customer_phone\": \"{{customer_phone}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/bookings/{{booking_code}}/cancel",
+                            "host": ["{{base_url}}"],
+                            "path": ["bookings", "{{booking_code}}", "cancel"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Today Queue",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/queue/today",
+                            "host": ["{{base_url}}"],
+                            "path": ["queue", "today"]
+                        }
+                    }
                 }
             ]
         },
         {
-            "name": "Admin",
+            "name": "Admin - Auth",
             "item": [
                 {
-                    "name": "Auth",
-                    "item": [
+                    "name": "Login",
+                    "event": [
                         {
-                            "name": "Login",
-                            "event": [
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var json = pm.response.json();",
+                                    "if (json.success && json.data && json.data.token) {",
+                                    "    pm.environment.set('admin_token', json.data.token);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/login",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "login"]
+                        }
+                    }
+                },
+                {
+                    "name": "Logout",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data && jsonData.data.token) {",
-                                            "    pm.environment.set('admin_token', jsonData.data.token);",
-                                            "    console.log('Token saved successfully!');",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
                                 }
-                            ],
-                            "request": {
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/login",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "login"]
-                                },
-                                "description": "Login sebagai admin.\n\nToken JWT akan otomatis tersimpan ke environment variable untuk digunakan di request selanjutnya."
-                            },
-                            "response": []
+                            ]
                         },
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/logout",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "logout"]
+                        }
+                    }
+                },
+                {
+                    "name": "Refresh Token",
+                    "event": [
                         {
-                            "name": "Logout",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "var json = pm.response.json();",
+                                    "if (json.success && json.data && json.data.token) {",
+                                    "    pm.environment.set('admin_token', json.data.token);",
+                                    "}"
                                 ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logout",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logout"]
-                                },
-                                "description": "Logout dan invalidate token"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Refresh Token",
-                            "event": [
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data && jsonData.data.token) {",
-                                            "    pm.environment.set('admin_token', jsonData.data.token);",
-                                            "    console.log('Token refreshed and saved!');",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
                                 }
-                            ],
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/refresh",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "refresh"]
-                                },
-                                "description": "Refresh JWT token.\n\nToken baru akan otomatis tersimpan ke environment variable."
-                            },
-                            "response": []
+                            ]
                         },
-                        {
-                            "name": "Get Current Admin",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/me",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "me"]
-                                },
-                                "description": "Mengambil data admin yang sedang login"
-                            },
-                            "response": []
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/refresh",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "refresh"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Dashboard",
-                    "item": [
-                        {
-                            "name": "Get Dashboard Data",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/dashboard",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "dashboard"]
-                                },
-                                "description": "Mengambil data dashboard:\n- Statistik hari ini\n- Statistik mingguan\n- Statistik bulanan\n- Layanan terpopuler"
-                            },
-                            "response": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Services",
-                    "item": [
-                        {
-                            "name": "Get All Services",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/services",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "services"]
-                                },
-                                "description": "Mengambil semua layanan (termasuk yang tidak aktif)"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Service by ID",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/services/{{service_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "services",
-                                        "{{service_id}}"
-                                    ]
-                                },
-                                "description": "Mengambil detail layanan berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Create Service",
-                            "event": [
+                    "name": "Get Me",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data && jsonData.data.id) {",
-                                            "    pm.environment.set('service_id', jsonData.data.id);",
-                                            "    console.log('Service ID saved: ' + jsonData.data.id);",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
                                 }
-                            ],
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Potong Rambut Premium\",\n    \"description\": \"Potong rambut dengan styling dan cuci rambut\",\n    \"price\": 50000,\n    \"duration_minutes\": 45,\n    \"is_active\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/services",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "services"]
-                                },
-                                "description": "Membuat layanan baru"
-                            },
-                            "response": []
+                            ]
                         },
-                        {
-                            "name": "Update Service",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Potong Rambut Premium Updated\",\n    \"price\": 55000,\n    \"is_active\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/services/{{service_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "services",
-                                        "{{service_id}}"
-                                    ]
-                                },
-                                "description": "Update layanan berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Delete Service",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/services/{{service_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "services",
-                                        "{{service_id}}"
-                                    ]
-                                },
-                                "description": "Hapus layanan berdasarkan ID.\n\nCatatan: Tidak bisa dihapus jika sudah memiliki booking."
-                            },
-                            "response": []
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/me",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "me"]
                         }
-                    ]
-                },
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Dashboard",
+            "item": [
                 {
-                    "name": "Tukang Cukur",
-                    "item": [
-                        {
-                            "name": "Get All Tukang Cukur",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/tukang-cukurs",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "tukang-cukurs"]
-                                },
-                                "description": "Mengambil semua tukang cukur dengan jadwal"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Tukang Cukur by ID",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "tukang-cukurs",
-                                        "{{tukang_cukur_id}}"
-                                    ]
-                                },
-                                "description": "Mengambil detail tukang cukur dengan jadwal"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Create Tukang Cukur",
-                            "event": [
+                    "name": "Get Dashboard",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data && jsonData.data.id) {",
-                                            "    pm.environment.set('tukang_cukur_id', jsonData.data.id);",
-                                            "    console.log('Tukang Cukur ID saved: ' + jsonData.data.id);",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
                                 }
-                            ],
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "formdata",
-                                    "formdata": [
-                                        {
-                                            "key": "name",
-                                            "value": "Budi Santoso",
-                                            "type": "text"
-                                        },
-                                        {
-                                            "key": "phone",
-                                            "value": "081234567890",
-                                            "type": "text"
-                                        },
-                                        {
-                                            "key": "is_active",
-                                            "value": "1",
-                                            "type": "text"
-                                        },
-                                        {
-                                            "key": "photo",
-                                            "type": "file",
-                                            "src": [],
-                                            "disabled": true
-                                        }
-                                    ]
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/tukang-cukurs",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "tukang-cukurs"]
-                                },
-                                "description": "Membuat tukang cukur baru.\n\nGunakan form-data untuk upload foto."
-                            },
-                            "response": []
+                            ]
                         },
-                        {
-                            "name": "Update Tukang Cukur",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"name\": \"Budi Santoso Updated\",\n    \"phone\": \"081234567899\",\n    \"is_active\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "tukang-cukurs",
-                                        "{{tukang_cukur_id}}"
-                                    ]
-                                },
-                                "description": "Update tukang cukur berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Delete Tukang Cukur",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "tukang-cukurs",
-                                        "{{tukang_cukur_id}}"
-                                    ]
-                                },
-                                "description": "Hapus tukang cukur berdasarkan ID.\n\nCatatan: Tidak bisa dihapus jika sudah memiliki booking."
-                            },
-                            "response": []
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/dashboard",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "dashboard"]
                         }
-                    ]
-                },
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Services",
+            "item": [
                 {
-                    "name": "Schedules",
-                    "item": [
-                        {
-                            "name": "Get All Schedules",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/schedules",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "schedules"]
-                                },
-                                "description": "Mengambil semua jadwal"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Create Schedule",
-                            "event": [
+                    "name": "Get All Services",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
                                 {
-                                    "listen": "test",
-                                    "script": {
-                                        "exec": [
-                                            "var jsonData = pm.response.json();",
-                                            "if (jsonData.success && jsonData.data && jsonData.data.id) {",
-                                            "    pm.environment.set('schedule_id', jsonData.data.id);",
-                                            "    console.log('Schedule ID saved: ' + jsonData.data.id);",
-                                            "}"
-                                        ],
-                                        "type": "text/javascript"
-                                    }
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
                                 }
-                            ],
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"tukang_cukur_id\": {{tukang_cukur_id}},\n    \"day_of_week\": 1,\n    \"open_time\": \"08:00\",\n    \"close_time\": \"17:00\",\n    \"is_available\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/schedules",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "schedules"]
-                                },
-                                "description": "Membuat jadwal baru.\n\nday_of_week:\n- 0 = Minggu\n- 1 = Senin\n- 2 = Selasa\n- 3 = Rabu\n- 4 = Kamis\n- 5 = Jumat\n- 6 = Sabtu"
-                            },
-                            "response": []
+                            ]
                         },
-                        {
-                            "name": "Update Schedule",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"open_time\": \"09:00\",\n    \"close_time\": \"18:00\",\n    \"is_available\": true\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/schedules/{{schedule_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "schedules",
-                                        "{{schedule_id}}"
-                                    ]
-                                },
-                                "description": "Update jadwal berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Delete Schedule",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/schedules/{{schedule_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "schedules",
-                                        "{{schedule_id}}"
-                                    ]
-                                },
-                                "description": "Hapus jadwal berdasarkan ID"
-                            },
-                            "response": []
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/services",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "services"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Bookings",
-                    "item": [
-                        {
-                            "name": "Get All Bookings",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "bookings"]
-                                },
-                                "description": "Mengambil semua booking dengan pagination"
-                            },
-                            "response": []
+                    "name": "Get Service by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
                         },
-                        {
-                            "name": "Get Bookings by Date",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings?date=2026-01-11",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "bookings"],
-                                    "query": [
-                                        {
-                                            "key": "date",
-                                            "value": "2026-01-11"
-                                        }
-                                    ]
-                                },
-                                "description": "Filter booking berdasarkan tanggal"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Bookings by Status",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings?status=pending",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "bookings"],
-                                    "query": [
-                                        {
-                                            "key": "status",
-                                            "value": "pending",
-                                            "description": "pending, confirmed, in_progress, completed, cancelled"
-                                        }
-                                    ]
-                                },
-                                "description": "Filter booking berdasarkan status"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Booking by ID",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings/{{booking_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "bookings",
-                                        "{{booking_id}}"
-                                    ]
-                                },
-                                "description": "Mengambil detail booking berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Update Booking Status",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "PUT",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    },
-                                    {
-                                        "key": "Content-Type",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "body": {
-                                    "mode": "raw",
-                                    "raw": "{\n    \"status\": \"confirmed\"\n}"
-                                },
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings/{{booking_id}}/status",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "bookings",
-                                        "{{booking_id}}",
-                                        "status"
-                                    ]
-                                },
-                                "description": "Update status booking.\n\nValid transitions:\n- pending → confirmed, in_progress, cancelled\n- confirmed → in_progress, cancelled\n- in_progress → completed, cancelled\n- completed → (final state)\n- cancelled → (final state)"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Delete Booking",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/bookings/{{booking_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": [
-                                        "admin",
-                                        "bookings",
-                                        "{{booking_id}}"
-                                    ]
-                                },
-                                "description": "Hapus booking berdasarkan ID"
-                            },
-                            "response": []
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/services/{{service_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "services", "{{service_id}}"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Queue Management",
-                    "item": [
-                        {
-                            "name": "Get Current Queue",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/queue",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "queue"]
-                                },
-                                "description": "Mengambil data antrian saat ini:\n- Yang sedang dilayani\n- Daftar yang menunggu"
-                            },
-                            "response": []
+                    "name": "Create Service",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
                         },
-                        {
-                            "name": "Call Next Queue",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/queue/next",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "queue", "next"]
-                                },
-                                "description": "Panggil antrian berikutnya.\n\nAkan otomatis:\n1. Set status current ke 'completed'\n2. Set status next ke 'in_progress'"
-                            },
-                            "response": []
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Potong Rambut Premium\",\n    \"description\": \"Potong rambut + cuci\",\n    \"price\": 50000,\n    \"duration_minutes\": 45,\n    \"is_active\": true\n}"
                         },
-                        {
-                            "name": "Reset Daily Queue",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "POST",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/queue/reset",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "queue", "reset"]
-                                },
-                                "description": "Reset antrian hari ini.\n\nSemua booking yang pending/confirmed/in_progress akan diubah ke cancelled."
-                            },
-                            "response": []
+                        "url": {
+                            "raw": "{{base_url}}/admin/services",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "services"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Reports",
-                    "item": [
-                        {
-                            "name": "Get Daily Report",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/reports/daily?date=2026-01-11",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "reports", "daily"],
-                                    "query": [
-                                        {
-                                            "key": "date",
-                                            "value": "2026-01-11",
-                                            "description": "Optional. Default: today"
-                                        }
-                                    ]
-                                },
-                                "description": "Laporan harian:\n- Summary (total, completed, cancelled, revenue)\n- By service\n- By tukang cukur"
-                            },
-                            "response": []
+                    "name": "Update Service",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
                         },
-                        {
-                            "name": "Get Weekly Report",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/reports/weekly?start_date=2026-01-06&end_date=2026-01-12",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "reports", "weekly"],
-                                    "query": [
-                                        {
-                                            "key": "start_date",
-                                            "value": "2026-01-06",
-                                            "description": "Optional. Default: start of current week"
-                                        },
-                                        {
-                                            "key": "end_date",
-                                            "value": "2026-01-12",
-                                            "description": "Optional. Default: end of current week"
-                                        }
-                                    ]
-                                },
-                                "description": "Laporan mingguan:\n- Summary\n- Daily breakdown"
-                            },
-                            "response": []
+                        "method": "PUT",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Potong Rambut Updated\",\n    \"price\": 55000\n}"
                         },
-                        {
-                            "name": "Get Monthly Report",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/reports/monthly?month=1&year=2026",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "reports", "monthly"],
-                                    "query": [
-                                        {
-                                            "key": "month",
-                                            "value": "1",
-                                            "description": "Optional. Default: current month"
-                                        },
-                                        {
-                                            "key": "year",
-                                            "value": "2026",
-                                            "description": "Optional. Default: current year"
-                                        }
-                                    ]
-                                },
-                                "description": "Laporan bulanan:\n- Summary\n- Weekly breakdown\n- Top services\n- Top tukang cukur"
-                            },
-                            "response": []
+                        "url": {
+                            "raw": "{{base_url}}/admin/services/{{service_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "services", "{{service_id}}"]
                         }
-                    ]
+                    }
                 },
                 {
-                    "name": "Logs",
-                    "item": [
-                        {
-                            "name": "Get All Logs",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logs",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logs"]
-                                },
-                                "description": "Mengambil semua activity logs"
-                            },
-                            "response": []
+                    "name": "Delete Service",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
                         },
-                        {
-                            "name": "Get Logs by Action",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logs?action=booking_created",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logs"],
-                                    "query": [
-                                        {
-                                            "key": "action",
-                                            "value": "booking_created",
-                                            "description": "login, logout, create, update, delete, booking_created, status_updated, queue_called, queue_reset"
-                                        }
-                                    ]
-                                },
-                                "description": "Filter logs berdasarkan action type"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Get Log by ID",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "GET",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logs/{{log_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logs", "{{log_id}}"]
-                                },
-                                "description": "Mengambil detail log berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Delete Log",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logs/{{log_id}}",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logs", "{{log_id}}"]
-                                },
-                                "description": "Hapus log berdasarkan ID"
-                            },
-                            "response": []
-                        },
-                        {
-                            "name": "Clear Old Logs",
-                            "request": {
-                                "auth": {
-                                    "type": "bearer",
-                                    "bearer": [
-                                        {
-                                            "key": "token",
-                                            "value": "{{admin_token}}",
-                                            "type": "string"
-                                        }
-                                    ]
-                                },
-                                "method": "DELETE",
-                                "header": [
-                                    {
-                                        "key": "Accept",
-                                        "value": "application/json"
-                                    }
-                                ],
-                                "url": {
-                                    "raw": "{{base_url}}/admin/logs?days=30",
-                                    "host": ["{{base_url}}"],
-                                    "path": ["admin", "logs"],
-                                    "query": [
-                                        {
-                                            "key": "days",
-                                            "value": "30",
-                                            "description": "Hapus logs yang lebih dari X hari. Default: 30"
-                                        }
-                                    ]
-                                },
-                                "description": "Hapus logs yang lebih lama dari X hari"
-                            },
-                            "response": []
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/services/{{service_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "services", "{{service_id}}"]
                         }
-                    ]
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Tukang Cukur",
+            "item": [
+                {
+                    "name": "Get All Tukang Cukur",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/tukang-cukurs",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "tukang-cukurs"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Tukang Cukur by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "admin",
+                                "tukang-cukurs",
+                                "{{tukang_cukur_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Tukang Cukur",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": [
+                                {
+                                    "key": "name",
+                                    "value": "Budi Santoso",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "phone",
+                                    "value": "081234567890",
+                                    "type": "text"
+                                },
+                                {
+                                    "key": "is_active",
+                                    "value": "1",
+                                    "type": "text"
+                                }
+                            ]
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/tukang-cukurs",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "tukang-cukurs"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Tukang Cukur",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Budi Updated\",\n    \"is_active\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "admin",
+                                "tukang-cukurs",
+                                "{{tukang_cukur_id}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Tukang Cukur",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/tukang-cukurs/{{tukang_cukur_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "admin",
+                                "tukang-cukurs",
+                                "{{tukang_cukur_id}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Schedules",
+            "item": [
+                {
+                    "name": "Get All Schedules",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/schedules",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "schedules"]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Schedule",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"tukang_cukur_id\": {{tukang_cukur_id}},\n    \"day_of_week\": 1,\n    \"open_time\": \"08:00\",\n    \"close_time\": \"17:00\",\n    \"is_available\": true\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/schedules",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "schedules"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Schedule",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"open_time\": \"09:00\",\n    \"close_time\": \"18:00\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/schedules/{{schedule_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "schedules", "{{schedule_id}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Schedule",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/schedules/{{schedule_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "schedules", "{{schedule_id}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Bookings",
+            "item": [
+                {
+                    "name": "Get All Bookings",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "bookings"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Bookings by Date",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings?date={{booking_date}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "bookings"],
+                            "query": [
+                                { "key": "date", "value": "{{booking_date}}" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Bookings by Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings?status=pending",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "bookings"],
+                            "query": [{ "key": "status", "value": "pending" }]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Booking by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings/{{booking_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "bookings", "{{booking_id}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Booking Status",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"confirmed\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings/{{booking_id}}/status",
+                            "host": ["{{base_url}}"],
+                            "path": [
+                                "admin",
+                                "bookings",
+                                "{{booking_id}}",
+                                "status"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Booking",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/bookings/{{booking_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "bookings", "{{booking_id}}"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Queue",
+            "item": [
+                {
+                    "name": "Get Current Queue",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/queue",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "queue"]
+                        }
+                    }
+                },
+                {
+                    "name": "Call Next Queue",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/queue/next",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "queue", "next"]
+                        }
+                    }
+                },
+                {
+                    "name": "Reset Queue",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/queue/reset",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "queue", "reset"]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Reports",
+            "item": [
+                {
+                    "name": "Daily Report",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/reports/daily?date={{booking_date}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "reports", "daily"],
+                            "query": [
+                                { "key": "date", "value": "{{booking_date}}" }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Weekly Report",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/reports/weekly",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "reports", "weekly"]
+                        }
+                    }
+                },
+                {
+                    "name": "Monthly Report",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/reports/monthly?month=1&year=2026",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "reports", "monthly"],
+                            "query": [
+                                { "key": "month", "value": "1" },
+                                { "key": "year", "value": "2026" }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Admin - Logs",
+            "item": [
+                {
+                    "name": "Get All Logs",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/logs",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "logs"]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Log by ID",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/logs/{{log_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "logs", "{{log_id}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Log",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/logs/{{log_id}}",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "logs", "{{log_id}}"]
+                        }
+                    }
+                },
+                {
+                    "name": "Clear Old Logs",
+                    "request": {
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{admin_token}}",
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            { "key": "Accept", "value": "application/json" }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/admin/logs?days=30",
+                            "host": ["{{base_url}}"],
+                            "path": ["admin", "logs"],
+                            "query": [{ "key": "days", "value": "30" }]
+                        }
+                    }
                 }
             ]
         }
