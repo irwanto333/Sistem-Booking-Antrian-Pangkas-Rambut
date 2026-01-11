@@ -74,7 +74,7 @@ class ReportController extends BaseController
 
         while ($currentDate <= $end) {
             $dateStr = $currentDate->toDateString();
-            $dayBookings = $bookings->where('booking_date', $dateStr);
+            $dayBookings = $bookings->filter(fn($b) => $b->booking_date->toDateString() === $dateStr);
             $dayCompleted = $dayBookings->where('status', Booking::STATUS_COMPLETED);
 
             $dailyBreakdown[] = [

@@ -31,6 +31,25 @@ class BookingController extends BaseController
             return $this->validationError($validator->errors());
         }
 
+        // Check if tukang cukur is active
+        $tukangCukur = \App\Models\TukangCukur::find($request->tukang_cukur_id);
+        if (!$tukangCukur || !$tukangCukur->is_active) {
+            return $this->error('Tukang cukur tidak aktif atau tidak tersedia', 422);
+        }
+
+        // Check if service is active
+        $service = \App\Models\Service::find($request->service_id);
+        if (!$service || !$service->is_active) {
+            return $this->error('Layanan tidak aktif atau tidak tersedia', 422);
+        }
+
+        // Check if booking time is not in the past (for today's booking)
+        if ($request->booking_date === now()->toDateString()) {
+            if ($request->booking_time <= now()->format('H:i')) {
+                return $this->error('Waktu booking sudah terlewat', 422);
+            }
+        }
+
         // Check if schedule is available
         $dayOfWeek = Carbon::parse($request->booking_date)->dayOfWeek;
         $schedule = Schedule::where('tukang_cukur_id', $request->tukang_cukur_id)
@@ -46,6 +65,14 @@ class BookingController extends BaseController
         $bookingTime = $request->booking_time;
         if ($bookingTime < $schedule->open_time || $bookingTime >= $schedule->close_time) {
             return $this->error('Waktu booking di luar jam operasional', 422);
+        }
+
+        // Check if service can be completed before closing time
+        $bookingEndTime = Carbon::parse($request->booking_date . ' ' . $bookingTime)
+            ->addMinutes($service->duration_minutes)
+            ->format('H:i');
+        if ($bookingEndTime > $schedule->close_time) {
+            return $this->error('Layanan tidak dapat selesai sebelum jam tutup. Pilih waktu lebih awal.', 422);
         }
 
         // Check for existing booking at same time

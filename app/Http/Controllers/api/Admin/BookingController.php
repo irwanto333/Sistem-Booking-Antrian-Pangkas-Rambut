@@ -76,6 +76,14 @@ class BookingController extends BaseController
         $oldStatus = $booking->status;
         $newStatus = $request->status;
 
+        // Validate status transition
+        if (!$booking->canTransitionTo($newStatus)) {
+            return $this->error(
+                "Status tidak dapat diubah dari '{$oldStatus}' ke '{$newStatus}'",
+                422
+            );
+        }
+
         $booking->update(['status' => $newStatus]);
 
         // Log activity

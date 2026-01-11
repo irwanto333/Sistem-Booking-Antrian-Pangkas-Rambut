@@ -104,6 +104,12 @@ Aplikasi ini adalah RESTful API untuk mengelola sistem booking dan antrian pada 
     php artisan migrate --seed
     ```
 
+    atau jika ingin migras dan seed fresh
+
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+
 8. **Jalankan server** (jika tidak menggunakan Herd)
     ```bash
     php artisan serve
@@ -483,4 +489,3 @@ File Postman Collection dan Environment tersedia di folder `docs/`:
 ## 📄 License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-

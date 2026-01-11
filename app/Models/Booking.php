@@ -119,4 +119,20 @@ class Booking extends Model
     {
         return in_array($this->status, [self::STATUS_PENDING, self::STATUS_CONFIRMED]);
     }
+
+    // Valid status transitions
+    const STATUS_TRANSITIONS = [
+        self::STATUS_PENDING => [self::STATUS_CONFIRMED, self::STATUS_IN_PROGRESS, self::STATUS_CANCELLED],
+        self::STATUS_CONFIRMED => [self::STATUS_IN_PROGRESS, self::STATUS_CANCELLED],
+        self::STATUS_IN_PROGRESS => [self::STATUS_COMPLETED, self::STATUS_CANCELLED],
+        self::STATUS_COMPLETED => [], // Final state
+        self::STATUS_CANCELLED => [], // Final state
+    ];
+
+    // Check if status transition is valid
+    public function canTransitionTo(string $newStatus): bool
+    {
+        $allowedTransitions = self::STATUS_TRANSITIONS[$this->status] ?? [];
+        return in_array($newStatus, $allowedTransitions);
+    }
 }
